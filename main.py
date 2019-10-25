@@ -51,7 +51,7 @@ class Player:
         self.keys = keys
         self.wormhole_timer = random.randint(Game.wormhole_timer_range[0], Game.wormhole_timer_range[1])
         # give this in negative
-        self.wormhole_timer_reset_time = -15
+        self.wormhole_timer_reset_time = -30
 
     def input(self, keys):
         if keys[self.keys[0]]:
@@ -62,10 +62,14 @@ class Player:
     def update(self):
         dir_x = math.cos(self.angle / 180 * math.pi)
         dir_y = math.sin(self.angle / 180 * math.pi)
-        self.position[0] = self.position[0] + dir_x * self.speed
-        self.position[1] = self.position[1] - dir_y * self.speed
+        self.position[0] = (self.position[0] + dir_x * self.speed) % 640
+        self.position[1] = (self.position[1] - dir_y * self.speed) % 640
 
-        self.pixel_collider = (math.ceil(self.position[0] + dir_x * 4), math.ceil(self.position[1] - dir_y * 4))
+        pos_x = math.ceil(self.position[0] + dir_x * 4) % 640
+        pos_y = math.ceil(self.position[1] - dir_y * 4) % 640
+
+        self.pixel_collider = (pos_x, pos_y)
+        #print(self.pixel_collider)
 
         self.wormhole_timer -= 1
         if self.wormhole_timer <= self.wormhole_timer_reset_time:
@@ -83,20 +87,21 @@ class Player:
         pygame.gfxdraw.aacircle(screen_surface, pos[0], pos[1], 3, (255, 255, 0))
         pygame.gfxdraw.filled_circle(screen_surface, pos[0], pos[1], 3, (255, 255, 0))
 
+    # old
     def bound_position(self, w, h):
-        # kyseenalainen ratkaisu kjeh kjeh tällä hetkellä
-        if self.position[0] >= w - 32:
-            self.position[0] = 32
+        if self.position[0] >= w:
+            self.position[0] = 0
+        elif self.position[0] < 0:
+            self.position[0] = w-1
 
-        if self.position[0] < 32:
-            self.position[0] = w - 32
+        if self.position[1] >= h:
+            self.position[1] = 0
+        elif self.position[1] < 0:
+            self.position[1] = h-1
 
-        if self.position[1] >= h - 32:
-            self.position[1] = 32
-
-        if self.position[1] < 32:
-            self.position[1] = h - 32
-
+    @staticmethod
+    def clamp(v, minv, maxv):
+        return max(minv, min(v, maxv))
 
 def init():
     pygame.init()
@@ -135,11 +140,10 @@ def mainloop():
         # logic
         for player in Game.players:
             player.update()
-            player.bound_position(640, 640)
 
             # collision
             current_screen = Game.collision_surface.get_at(player.pixel_collider)
-            if current_screen != (0, 0, 0, 255):
+            if current_screen != (0, 0, 0, 255) and player.wormhole_timer >= 0:
                 print(player.name, " Lost!")
                 Game.reset_game()
 
