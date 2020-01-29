@@ -11,11 +11,11 @@ class GameConfig:
     :cvar bool headless: Do not create window
     :cvar (int,int) wormhole_timer_range: How often create wormholes. Smaller values = More often.
     :cvar bool powerups_enabled: Enable powerups.
-    :cvar [string] powerup_blacklist: Disable named powerups.
+    :cvar [string] powerup_blacklist: Disable given powerups.
     :cvar bool survival: Enable survival gamemode
     :cvar string survival_maps_folder: Survival mode maps folder
-    :cvar [[pygame.keycode, pygame.keycode]] default_controls: Controls for players
-    :cvar [(int, int, int)] default_colors: Colors for players.
+    :cvar list((pygame.keycode,pygame.keycode)) default_controls: Controls for players
+    :cvar list((int,int,int)) default_colors: Colors for players.
 
 
     """

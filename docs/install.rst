@@ -3,7 +3,7 @@
 Installation
 ==================================
 
-Download Kuruve from the github and run (after you have installed all the necessary dependencies)
+Download Kuruve from the `github <https://github.com/Fortuzen/Kuruve>`_ and run (after you have installed all the necessary dependencies)
 
 .. code-block:: bash
 
