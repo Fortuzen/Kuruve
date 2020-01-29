@@ -1,20 +1,17 @@
 import gym
 from gym import spaces
-
 import numpy as np
+import os
 
 from kuruve.KurveGame import *
-
-import os
 
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 
-
 class SurvivalEnv(gym.Env):
     """
-    Gym compatible learning environment. Try survive as long as possible.
+    Gym compatible learning environment. Try survive as long as possible. One player.
 
     :param headless: Show window
     :param observation_size: The game screen will be scales to this size
@@ -27,6 +24,7 @@ class SurvivalEnv(gym.Env):
     def __init__(self, headless=False, observation_size=(64, 64), fps_cap=0, frameskip=1, enable_powerups=False,
                  verbose=0):
         print("KuruveGymEnv init")
+        assert frameskip > 0, "Frameskip is set to 0 or less"
 
         self.screen_size = observation_size
         self.frameskip = frameskip
@@ -128,11 +126,6 @@ class SurvivalEnv(gym.Env):
     def seed(self, seed=None):
         raise NotImplementedError
 
-    def _grayscale(self, img):
-        arr = pygame.surfarray.array3d(img)
-        arr = arr.dot([0.298, 0.587, 0.114])[:, :, None].repeat(3, axis=2);
-        return pygame.surfarray.make_surface(arr)
-
     def _create_observation(self):
         #pygame.transform.scale(GameState.screen, self.screen_size, self.small_screen)
 
@@ -152,10 +145,11 @@ class SurvivalEnv(gym.Env):
         self.screen_player_pos.fill((0, 0, 0))
         pygame.draw.rect(self.screen_player_pos, (255, 255, 255), (pos_1, (2, 2)))
 
-        # Create observation
+        # Create grayscale observation, game screen
         obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
         obs = np.dot(obs[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
+        # Create observation, player position TODO: seems inefficient
         pos_arr = pygame.surfarray.array3d(self.screen_player_pos).swapaxes(0, 1)
         pos_arr = np.dot(pos_arr[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
         obs = np.dstack((obs, pos_arr))

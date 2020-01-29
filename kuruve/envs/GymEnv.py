@@ -11,7 +11,6 @@ import os
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 
-
 # TODO: change parameters to kwargs/better config
 class KuruveGymEnv(gym.Env):
     """

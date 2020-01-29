@@ -24,6 +24,7 @@ def test():
     game_count = 0
     while game_count < 10:
         action = env.action_space.sample()
+        # Framerate
         t1 = time.time()
         obs, reward, done, info = env.step(action)
         print(1/(time.time()-t1))
