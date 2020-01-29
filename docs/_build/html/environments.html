@@ -159,7 +159,7 @@
             
   <div class="section" id="environments">
 <span id="id1"></span><h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h1>
-<p>There are 4 environments available. You should use KuruveGymEnv as a base for other environments.
+<p>There are 4 environments available. You should use KuruveGymEnv as a base for other/new environments.
 Remember to check the action and observations spaces for each environment.</p>
 <div class="section" id="gymenv-kuruvegymenv">
 <h2>GymEnv/KuruveGymEnv<a class="headerlink" href="#gymenv-kuruvegymenv" title="Permalink to this headline">¶</a></h2>
@@ -167,7 +167,7 @@ Remember to check the action and observations spaces for each environment.</p>
 <img alt="_images/env_rgb.png" src="_images/env_rgb.png" />
 <span class="target" id="module-kuruve.envs.GymEnv"></span><dl class="class">
 <dt id="kuruve.envs.GymEnv.KuruveGymEnv">
-<em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.GymEnv.</code><code class="sig-name descname">KuruveGymEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=1</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.GymEnv.KuruveGymEnv" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.GymEnv.</code><code class="sig-name descname">KuruveGymEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=1</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">player_count=2</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.GymEnv.KuruveGymEnv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gym compatible learning environment for 2 players (for now). Use this as a base for environments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -178,6 +178,7 @@ Remember to check the action and observations spaces for each environment.</p>
 <li><p><strong>frameskip</strong> – Skip frames. Previous action will be repeated for the skip duration. Use 1 for no skip (Default).</p></li>
 <li><p><strong>enable_powerups</strong> – Enable powerup spawning.</p></li>
 <li><p><strong>verbose</strong> – Print additional information.</p></li>
+<li><p><strong>player_count</strong> – Number of players. Max 4</p></li>
 </ul>
 </dd>
 </dl>
@@ -214,7 +215,7 @@ Remember to check the action and observations spaces for each environment.</p>
 <dl class="class">
 <dt id="kuruve.envs.SurvivalEnv.SurvivalEnv">
 <em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.SurvivalEnv.</code><code class="sig-name descname">SurvivalEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=1</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.SurvivalEnv.SurvivalEnv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gym compatible learning environment. Try survive as long as possible.</p>
+<dd><p>Gym compatible learning environment. Try survive as long as possible. One player.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -239,7 +240,7 @@ Remember to check the action and observations spaces for each environment.</p>
 <span class="target" id="module-kuruve.envs.CompetitiveEnv"></span><dl class="class">
 <dt id="kuruve.envs.CompetitiveEnv.CompetitiveEnv">
 <em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.CompetitiveEnv.</code><code class="sig-name descname">CompetitiveEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=0</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">player2_step=None</em>, <em class="sig-param">player2_reset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.CompetitiveEnv.CompetitiveEnv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Environment for self-play experiments. Two worms (currently).</p>
+<dd><p>Environment for self-play experiments. Two worms only.</p>
 </dd></dl>
 
 </div>
@@ -247,7 +248,7 @@ Remember to check the action and observations spaces for each environment.</p>
 <span id="randomenv"></span><h2>RandomEnv<a class="headerlink" href="#module-kuruve.envs.RandomEnv" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="kuruve.envs.RandomEnv.RandomEnv">
-<em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.RandomEnv.</code><code class="sig-name descname">RandomEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=0</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.RandomEnv.RandomEnv" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">kuruve.envs.RandomEnv.</code><code class="sig-name descname">RandomEnv</code><span class="sig-paren">(</span><em class="sig-param">headless=False</em>, <em class="sig-param">observation_size=(64</em>, <em class="sig-param">64)</em>, <em class="sig-param">fps_cap=0</em>, <em class="sig-param">frameskip=0</em>, <em class="sig-param">enable_powerups=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_players=1</em><span class="sig-paren">)</span><a class="headerlink" href="#kuruve.envs.RandomEnv.RandomEnv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Environment in which the second worm’s actions are random. Not very useful for training because
 the random worm does not survive for long.</p>
 </dd></dl>

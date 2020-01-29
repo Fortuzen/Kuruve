@@ -17,6 +17,7 @@ Collision detection
 ----------------------------------
 Collision detection is very simple for the worms. One pixel position is taken ahead of the worm and 
 then checked against the collision surface. If the color is anything but black, collision happened.
+Note that collision detection is not super perfect but it is good enough.
 
 Headless mode
 ----------------------------------

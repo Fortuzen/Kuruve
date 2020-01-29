@@ -156,8 +156,12 @@
             
   <div class="section" id="installation">
 <span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Download Kuruve from the github and then set the environment variable PYTHONPATH for extracted folder. For example on Linux:
-export PYTHONPATH=home/<strong>*user*</strong>/kurve</p>
+<p>Download Kuruve from the github and run (after you have installed all the necessary dependencies)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install .
+<span class="c1"># or if you want to edit files</span>
+pip install -e &lt;pathToKuruve&gt;
+</pre></div>
+</div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>The game itself only needs <a class="reference external" href="https://www.pygame.org">pygame</a></p>
@@ -166,7 +170,6 @@ export PYTHONPATH=home/<strong>*user*</strong>/kurve</p>
 </div>
 <p>The environments need <a class="reference external" href="https://github.com/openai/gym">gym</a> and <a class="reference external" href="https://scipy.org/install.html">numpy</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install gym
-python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
 </pre></div>
 </div>
 <p>If you want to run the examples, you need to have <a class="reference external" href="https://github.com/hill-a/stable-baselines/">stable-baselines</a> installed.

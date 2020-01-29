@@ -4,7 +4,7 @@
 
 Environments
 ==================================
-There are 4 environments available. You should use KuruveGymEnv as a base for other environments.
+There are 4 environments available. You should use KuruveGymEnv as a base for other/new environments.
 Remember to check the action and observations spaces for each environment.
 
 GymEnv/KuruveGymEnv
