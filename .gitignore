@@ -1,2 +1,4 @@
 kuruve.egg-info
 .pyc
+__pycache__/
+.idea/

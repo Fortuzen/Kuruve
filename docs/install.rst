@@ -3,8 +3,14 @@
 Installation
 ==================================
 
-Download Kuruve from the github and then set the environment variable PYTHONPATH for extracted folder. For example on Linux:
-export PYTHONPATH=home/***user***/kurve
+Download Kuruve from the github and run (after you have installed all the necessary dependencies)
+
+.. code-block:: bash
+
+   pip install .
+   # or if you want to edit files
+   pip install -e <pathToKuruve>
+
 
 
 Dependencies
@@ -21,7 +27,6 @@ The environments need `gym <https://github.com/openai/gym>`_ and `numpy <https:/
 .. code-block:: bash
 
    pip install gym
-   python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
 
 If you want to run the examples, you need to have `stable-baselines <https://github.com/hill-a/stable-baselines/>`_ installed.
 To install stable-baselines, refer to these `instructions <https://stable-baselines.readthedocs.io/en/master/guide/install.html>`_
