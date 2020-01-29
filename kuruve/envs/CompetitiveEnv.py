@@ -8,7 +8,7 @@ import math
 
 class CompetitiveEnv(KuruveGymEnv):
     """
-    Environment for self-play experiments. Two worms (currently).
+    Environment for self-play experiments. Two worms only.
 
     """
 
@@ -86,6 +86,6 @@ class CompetitiveEnv(KuruveGymEnv):
         pos_arr_2 = pygame.surfarray.array3d(self.screen_player_pos_2).swapaxes(0, 1)
         pos_arr_2 = np.dot(pos_arr_2[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
-        obs = np.array([np.dstack((obs[0], pos_arr_1)), np.dstack((obs[1], pos_arr_2))])
+        obs = np.array([np.dstack((obs, pos_arr_1)), np.dstack((obs, pos_arr_2))])
 
         return obs

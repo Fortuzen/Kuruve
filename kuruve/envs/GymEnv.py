@@ -57,7 +57,7 @@ class KuruveGymEnv(gym.Env):
         self.total_round_reward = 0
 
         self.action_space = spaces.MultiDiscrete(players_input)
-        # rgb image
+        # Only rgb image
         self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8,
                                             shape=(self.screen_size[1], self.screen_size[0], 3))
 

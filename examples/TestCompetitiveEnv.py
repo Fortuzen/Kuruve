@@ -35,8 +35,8 @@ def play():
         obs, reward, done, info = vec_env.step(action)
 
         if 10 < t < 12:
-            image1 = Image.fromarray(obs[:, :, 0], "L")
-            image2 = Image.fromarray(obs[:, :, 1], "L")
+            image1 = Image.fromarray(obs[..., 0], "L")
+            image2 = Image.fromarray(obs[..., 1], "L")
             #image.convert("L").save("test.bmp")
             #Image.blend(image1, image2, 0.5).show()
             #image1.show()
