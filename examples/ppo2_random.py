@@ -1,11 +1,10 @@
-from RandomEnv import RandomEnv
+from kuruve.envs.RandomEnv import RandomEnv
 import os
 from stable_baselines import PPO2
 from stable_baselines.common.policies import CnnPolicy
 from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
 
-# TODO: UPDATE THIS FILE.
-
+# TODO: Not ready and not high priority due to random agent being useless
 
 def create_env():
     return RandomEnv(headless=False, observation_size=(96, 96), fps_cap=60, frameskip=20, enable_powerups=False)
