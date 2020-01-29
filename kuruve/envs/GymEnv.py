@@ -11,8 +11,8 @@ import os
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 
-# For 2 players, for now
-# TODO: Add support for more players
+
+# TODO: change parameters to kwargs/better config
 class KuruveGymEnv(gym.Env):
     """
     Gym compatible learning environment for 2 players (for now). Use this as a base for environments.
@@ -23,15 +23,19 @@ class KuruveGymEnv(gym.Env):
     :param frameskip: Skip frames. Previous action will be repeated for the skip duration. Use 1 for no skip (Default).
     :param enable_powerups: Enable powerup spawning.
     :param verbose: Print additional information.
+    :param player_count: Number of players. Max 4
     """
 
     def __init__(self, headless=False, observation_size=(64, 64), fps_cap=0, frameskip=1, enable_powerups=False,
-                 verbose=0):
+                 verbose=0, player_count=2):
         print("KuruveGymEnv init")
+
+        assert frameskip > 0, "Frameskip is set to 0 or less"
 
         self.screen_size = observation_size
         self.frameskip = frameskip
         self.verbose = verbose
+        self.player_count = player_count
 
         GameConfig.headless = headless
         GameConfig.framerate = fps_cap
@@ -40,8 +44,10 @@ class KuruveGymEnv(gym.Env):
 
         Game.init()
 
-        Game.add_player("Kurve_1", GameConfig.default_colors[0], GameConfig.default_controls[0])
-        Game.add_player("Kurve_2", GameConfig.default_colors[1], GameConfig.default_controls[1])
+        players_input = []
+        for i in range(self.player_count):
+            Game.add_player("Kurve_"+str(i+1), GameConfig.default_colors[i], GameConfig.default_controls[i])
+            players_input.append(3)
 
         Game.reset_game()
 
@@ -51,10 +57,10 @@ class KuruveGymEnv(gym.Env):
         self.score_difference = 0
         self.total_round_reward = 0
 
-        # For 2 players, rgb image
-        self.action_space = spaces.MultiDiscrete([3, 3])
+        self.action_space = spaces.MultiDiscrete(players_input)
+        # rgb image
         self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8,
-                                            shape=(2, self.screen_size[1], self.screen_size[0], 3))
+                                            shape=(self.screen_size[1], self.screen_size[0], 3))
 
     def step(self, action):
         """ """
@@ -88,13 +94,17 @@ class KuruveGymEnv(gym.Env):
         obs = self._create_observation()
 
         # Rewards for players
-        reward = [0, 0]
+        reward = [0]*self.player_count
         terminal = Game.reseting
-        if terminal and Player.players[0].alive:
-            reward = [1, -1]
-        elif terminal and not Player.players[0].alive:
-            reward = [-1, 1]
+
+        if terminal:
+            reward = [-1]*self.player_count
+            for i in range(self.player_count):
+                if Player.players[i].alive:
+                    reward[i] = 1
+
         self.total_round_reward += reward[0]
+
         return obs, reward, terminal, None
 
     def reset(self):
@@ -136,19 +146,13 @@ class KuruveGymEnv(gym.Env):
 
         raise NotImplementedError
 
-    def _grayscale(self, img):
-        arr = pygame.surfarray.array3d(img)
-        arr = arr.dot([0.298, 0.587, 0.114])[:, :, None].repeat(3, axis=2);
-        return pygame.surfarray.make_surface(arr)
-
     def _create_observation(self):
         #pygame.transform.scale(GameState.screen, self.screen_size, self.small_screen)
 
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
-        p2_surface = self.screen_game.copy()
+        #p2_surface = self.screen_game.copy() # Just in case
 
         # Swap axis because otherwise image's orientation is wrong.
-        obs = np.array([pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1),
-                        pygame.surfarray.array3d(p2_surface).swapaxes(0, 1)])
+        obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
 
         return obs
