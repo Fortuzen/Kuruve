@@ -5,6 +5,7 @@ from kuruve.KurveGame import *
 from kuruve.envs.GymEnv import KuruveGymEnv
 from gym import spaces
 
+
 class RandomEnv(KuruveGymEnv):
     """
     Environment in which the second worm's actions are random. Not very useful for training because
@@ -12,22 +13,24 @@ class RandomEnv(KuruveGymEnv):
     """
 
     def __init__(self, headless=False, observation_size=(64, 64), fps_cap=0, frameskip=0, enable_powerups=False,
-                 verbose=0):
-        super().__init__(headless, observation_size, fps_cap, frameskip, enable_powerups, verbose)
+                 verbose=0, random_players=1):
+        self.random_players = random_players
+        super().__init__(headless, observation_size, fps_cap, frameskip, enable_powerups, verbose, random_players+1)
 
         self.screen_player_pos = pygame.Surface(self.screen_size)
         self.screen_player_pos = self.screen_player_pos.convert(32, 0)
 
         self.action_space = spaces.Discrete(3)
         self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8,
-                                            shape=(self.screen_size[0], self.screen_size[1], 2))
+                                            shape=(self.screen_size[1], self.screen_size[0], 2))
 
     def reset(self):
         obs = super().reset()
-        return obs[0]
+        return obs
 
     def step(self, action):
-        actions = [action, self.action_space.sample()]
+        actions = [self.action_space.sample() for _ in range(self.random_players+1)]
+        actions[0] = action
         obs, reward, done, info = super().step(actions)
         obs = self._process_observation(obs)
         reward = reward[0]

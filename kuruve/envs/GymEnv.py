@@ -64,7 +64,8 @@ class KuruveGymEnv(gym.Env):
     def step(self, action):
         """ """
 
-        actions = [possible_actions[action[0]], possible_actions[action[1]]]
+        #actions = [possible_actions[action[0]], possible_actions[action[1]]]
+        actions = [possible_actions[action[i]] for i in range(self.player_count)]
         # Frameskipping
         for _ in range(self.frameskip):
 
