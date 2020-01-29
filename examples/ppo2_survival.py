@@ -14,7 +14,7 @@ from stable_baselines.common.evaluation import evaluate_policy
 
 
 # Arguments
-parser = argparse.ArgumentParser(description="Train selfplaying agent")
+parser = argparse.ArgumentParser(description="Train survival agent")
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-play", action="store_true", help="Play with the trained agent")

@@ -7,23 +7,47 @@ from stable_baselines import PPO2
 from stable_baselines.common.policies import CnnPolicy
 from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
 
-from CompetitiveEnv import CompetitiveEnv
+from kuruve.envs.CompetitiveEnv import CompetitiveEnv
 
-# TODO: UPDATE THIS FILE. Not ready yet.
+# TODO: Not ready yet.
 
 import numpy as np
 
 import argparse
-parser = argparse.ArgumentParser(description="Train selfplaying agent")
-group = parser.add_mutually_exclusive_group()
 
+# Arguments
+parser = argparse.ArgumentParser(description="Train selfplaying agent")
+
+group = parser.add_mutually_exclusive_group()
 group.add_argument("-play", action="store_true", help="Play with the trained agent")
 group.add_argument("-train", action="store_true", help="Train agent")
 
-parser.add_argument("-timesteps", metavar="N", type=int)
-parser.add_argument("-model", metavar="name", type=str)
+parser.add_argument("-timesteps", metavar="N", type=int, default=100000)
+parser.add_argument("-frameskip", metavar="N", type=int, default=10)
+parser.add_argument("-obs_size", metavar="N", type=int, default=96)
+parser.add_argument("-envs", metavar="N", type=int, default=1)
+parser.add_argument("-model", metavar="name", type=str, default="model_default")
+
+parser.add_argument("-gpu", action="store_true", help="Enable gpu")
 
 args = parser.parse_args()
+
+OBS_SIZE = (args.obs_size, args.obs_size)
+FRAMESKIP = args.frameskip
+MODEL_NAME = args.model
+TIMESTEPS = args.timesteps
+ENV_COUNT = args.envs
+
+if args.gpu:
+    # GPU Settings
+    print("---Using GPU---")
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.Session(config=config)
+else:
+    # CPU only
+    print("---Using CPU---")
+    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 # Credits to Torille

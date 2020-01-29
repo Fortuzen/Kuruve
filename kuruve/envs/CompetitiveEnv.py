@@ -60,7 +60,7 @@ class CompetitiveEnv(KuruveGymEnv):
         raise NotImplementedError
 
     def _process_observations(self, obs):
-        """Turn rgb images into grayscale and add players positions as white squares"""
+        """Turn rgb image into grayscale and add players positions as white squares"""
 
         scale_x = GameConfig.screen_x / self.screen_size[0]
         scale_y = GameConfig.screen_y / self.screen_size[1]
