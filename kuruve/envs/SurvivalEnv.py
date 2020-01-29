@@ -127,7 +127,7 @@ class SurvivalEnv(gym.Env):
         raise NotImplementedError
 
     def _create_observation(self):
-        #pygame.transform.scale(GameState.screen, self.screen_size, self.small_screen)
+        #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
 
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
 
@@ -149,9 +149,10 @@ class SurvivalEnv(gym.Env):
         obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
         obs = np.dot(obs[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
-        # Create observation, player position TODO: seems inefficient
+        # Create observation, player position TODO: Test new pos_arr
         pos_arr = pygame.surfarray.array3d(self.screen_player_pos).swapaxes(0, 1)
-        pos_arr = np.dot(pos_arr[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
+        #pos_arr = np.dot(pos_arr[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
+        pos_arr = pos_arr[..., 1].astype(np.uint8)
         obs = np.dstack((obs, pos_arr))
 
         return obs

@@ -1,17 +1,8 @@
-
 import argparse
 import time
 import os
 
 import tensorflow as tf
-# CPU only
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-# GPU Settings
-#print("Gpu settings ---")
-#config = tf.ConfigProto()
-#config.gpu_options.allow_growth = True
-#sess = tf.Session(config=config)
-#print("Gpu settings ----")
 
 from kuruve.envs.SurvivalEnv import SurvivalEnv
 
@@ -21,8 +12,6 @@ from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines.bench import Monitor
 from stable_baselines.common.evaluation import evaluate_policy
 
-
-# TODO: Update file
 
 # Arguments
 parser = argparse.ArgumentParser(description="Train selfplaying agent")
@@ -37,6 +26,8 @@ parser.add_argument("-obs_size", metavar="N", type=int, default=96)
 parser.add_argument("-envs", metavar="N", type=int, default=1)
 parser.add_argument("-model", metavar="name", type=str, default="model_default")
 
+parser.add_argument("-gpu", action="store_true", help="Enable gpu")
+
 args = parser.parse_args()
 
 OBS_SIZE = (args.obs_size, args.obs_size)
@@ -44,6 +35,17 @@ FRAMESKIP = args.frameskip
 MODEL_NAME = args.model
 TIMESTEPS = args.timesteps
 ENV_COUNT = args.envs
+
+if args.gpu:
+    # GPU Settings
+    print("---Using GPU---")
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.Session(config=config)
+else:
+    # CPU only
+    print("---Using CPU---")
+    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 def create_env():
@@ -92,13 +94,14 @@ def evaluate():
     vec_env = DummyVecEnv([lambda: vec_env])
 
     # Old test
-    #model = PPO2.load("model_survival_96_10000")
-    #print("Before Training eval")
-    #print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
-    #print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
-    #print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
-    #print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
-
+    """
+    model = PPO2.load("model_survival_96_10000")
+    print("Before Training eval")
+    print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
+    print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
+    print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
+    print(evaluate_policy(model, vecEnv, n_eval_episodes=1000))
+    """
     model = PPO2.load(MODEL_NAME)
     print("After Training evaluation")
     print(evaluate_policy(model, vec_env, n_eval_episodes=1000))
