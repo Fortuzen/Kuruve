@@ -41,7 +41,7 @@ MODEL_NAME = args.model
 TIMESTEPS = args.timesteps
 ENV_COUNT = args.envs
 
-SNAPSHOT_PREFIX = "model_snapshot"
+SNAPSHOT_PREFIX = args.model.split(".")[0]+"_snapshot"
 
 if args.gpu:
     # GPU Settings
@@ -196,7 +196,8 @@ def train():
     envs = [create_env_headless for _ in range(ENV_COUNT)]
     vec_envs = SubprocVecEnv(envs, start_method="spawn")
 
-    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
+    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.001, n_steps=256)
+    #model = PPO2('MlpPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
     #model = PPO2(CnnPolicy, vec_envs, verbose=1, n_steps=256)
 
     if not os.path.isfile(MODEL_NAME):
