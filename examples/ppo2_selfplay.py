@@ -6,6 +6,11 @@ from pprint import pprint
 from datetime import datetime
 import argparse
 import tensorflow as tf
+from kuruve.envs.CompetitiveEnv import CompetitiveEnv
+from stable_baselines import PPO2
+from stable_baselines.common.policies import CnnPolicy
+from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
+from stable_baselines.common.evaluation import evaluate_policy
 
 # TODO: Not ready yet.
 
@@ -52,11 +57,6 @@ else:
     print("---Using CPU---")
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-from kuruve.envs.CompetitiveEnv import CompetitiveEnv
-from stable_baselines import PPO2
-from stable_baselines.common.policies import CnnPolicy
-from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
-from stable_baselines.common.evaluation import evaluate_policy
 
 # Credits to Torille
 
