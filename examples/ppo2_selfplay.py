@@ -44,11 +44,14 @@ ENV_COUNT = args.envs
 SNAPSHOT_PREFIX = args.model.split(".")[0]+"_snapshot"
 
 if args.gpu:
-    # GPU Settings
-    print("---Using GPU---")
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
+    if __name__ == "__main__":
+        # GPU Settings
+        print("---Using GPU---")
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(config=config)
+    else:
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 else:
     # CPU only
     print("---Using CPU---")
@@ -172,7 +175,7 @@ def create_env():
                 opponent_ppo.load_parameters(MODEL_NAME)
                 opponent_ppo.use_random_agent = False
 
-    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP, enable_powerups=False,
+    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=60, frameskip=FRAMESKIP, enable_powerups=False,
                           verbose=1, player2_step=player2_step, player2_reset=player2_reset)
 
 
