@@ -110,6 +110,8 @@ class Game:
 
         pygame.init()
         pygame.font.init()
+        # Uninit sound because it is not needed
+        pygame.mixer.quit()
 
         # We must force 32 format screen on some systems
         if GameConfig.headless:
