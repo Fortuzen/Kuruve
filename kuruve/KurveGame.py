@@ -250,7 +250,7 @@ class Game:
         GameState.round_ticks += 1
 
     @staticmethod
-    def add_player(name, color, controls):
+    def add_player(name, color, controls, is_ai=False):
         """
         Add a player to the game
         :param name: Player's name
@@ -259,6 +259,6 @@ class Game:
         :param controls: Player's keyboard controls
         :type controls: A list of pygame keycodes eg [pygame.K_LEFT, pygame.K_RIGHT]
         """
-        player = Player(0, 0, 0, color, name, controls)
+        player = Player(0, 0, 0, color, name, controls, is_ai)
         Player.players.append(player)
 

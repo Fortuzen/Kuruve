@@ -7,6 +7,7 @@ import os
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
+
 # TODO: change parameters to kwargs/better config
 class KuruveGymEnv(gym.Env):
     """
@@ -143,7 +144,6 @@ class KuruveGymEnv(gym.Env):
 
     def _create_observation(self):
         #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
-
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
         #p2_surface = self.screen_game.copy() # Just in case
 

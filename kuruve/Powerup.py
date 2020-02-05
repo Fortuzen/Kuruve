@@ -69,13 +69,13 @@ class Powerup:
 class PowerupGreenSpeed(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_s, player, 2)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1)
+        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1.5)
 
 
 class PowerupGreenSlow(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_s, player, 0.5)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1)
+        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1.5)
 
 
 class PowerupGreenGodMode(Powerup):
@@ -97,19 +97,19 @@ class PowerupGreenThin(Powerup):
 class PowerupRedSpeed(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_enemies_s, player, 2)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1)
+        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1.5)
 
 
 class PowerupRedSlow(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_enemies_s, player, 0.5)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1)
+        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1.5)
 
 
 class PowerupRedThick(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_enemies_thick, player, 6)
-        EventManager.fire_event_after_delay(60*3, Player.set_enemies_thick, player, 4)
+        EventManager.fire_event_after_delay(60*3, Player.set_enemies_thick, player, 3)
 
 
 class PowerupRedTurn90(Powerup):

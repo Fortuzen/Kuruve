@@ -11,9 +11,9 @@ def mainloop():
 
     # TODO: Add custom amount of players
     Game.add_player("Kurve_1", GameConfig.default_colors[0], GameConfig.default_controls[0])
-    Game.add_player("Kurve_2", GameConfig.default_colors[1], GameConfig.default_controls[1])
-    #Game.add_player("Kurve_3", GameConfig.default_colors[2], GameConfig.default_controls[2])
-    #Game.add_player("Kurve_4", GameConfig.default_colors[3], GameConfig.default_controls[3])
+    Game.add_player("Kurve_2", GameConfig.default_colors[1], GameConfig.default_controls[1], is_ai=True)
+    Game.add_player("Kurve_3", GameConfig.default_colors[2], GameConfig.default_controls[2], is_ai=True)
+    Game.add_player("Kurve_4", GameConfig.default_colors[3], GameConfig.default_controls[3], is_ai=True)
 
     # Game begins
     Game.reset_game()

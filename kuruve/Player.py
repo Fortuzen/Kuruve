@@ -22,7 +22,7 @@ class Player:
 
     players = []
 
-    def __init__(self, x, y, a, color, name, keys):
+    def __init__(self, x, y, a, color, name, keys, is_ai=False):
         self.position = [x, y]
         self.previous_position = [x, y]
         self.radius = 3
@@ -46,8 +46,16 @@ class Player:
         self.turn90 = False
         self.turn90previousKey = None
 
-    def input(self, keys):
+        # Simple AI
+        self.is_ai = is_ai
+        self.ai_area = 32
+        self.left_area = pygame.Surface((self.ai_area, self.ai_area)).convert(32, 0)
+        self.top_area = pygame.Surface((self.ai_area, self.ai_area)).convert(32, 0)
+        self.right_area = pygame.Surface((self.ai_area, self.ai_area)).convert(self.ai_area, 0)
 
+    def input(self, keys):
+        if self.is_ai:
+            keys = self.ai_decision(keys)
         # left
         ogangle = self.angle
         if keys[self.keys[0]]:
@@ -127,6 +135,62 @@ class Player:
 
             if noinput:
                 self.turn90previousKey = None
+
+    def ai_decision(self, keys):
+        """Very simple ai. Slightly better than random"""
+
+        keys_temp = []
+        keys_temp.extend(keys)
+        # Fill areas
+        r = 32
+        r2 = self.ai_area/2
+        rad_left = (self.angle + 90) / 180 * math.pi
+        rad_right = (self.angle - 90) / 180 * math.pi
+        rad_top = self.angle / 180 * math.pi
+
+        rect_area_left = (self.position[0] + r*math.cos(rad_left) - r2, self.position[1] - r*math.sin(rad_left) - r2, self.ai_area, self.ai_area)
+        rect_area_right = (self.position[0] + r * math.cos(rad_right) - r2, self.position[1] - r * math.sin(rad_right) - r2, self.ai_area, self.ai_area)
+        rect_area_top = (self.position[0] + r * math.cos(rad_top) - r2, self.position[1] - r * math.sin(rad_top) - r2, self.ai_area, self.ai_area)
+
+        self.left_area.blit(GameState.collision_surface, (0, 0),  rect_area_left)
+        self.right_area.blit(GameState.collision_surface, (0, 0), rect_area_right)
+        self.top_area.blit(GameState.collision_surface, (0, 0), rect_area_top)
+
+        left = sum(pygame.transform.average_color(self.left_area))
+        right = sum(pygame.transform.average_color(self.right_area))
+        top = sum(pygame.transform.average_color(self.top_area))
+
+        # candidates
+        thres = 1
+        can_turn = [left < thres, right < thres, top < thres]
+        #print(can_turn)
+        i = 0
+        actions = list()
+        for b in can_turn:
+            if b:
+                if i == 0:
+                    actions.append(self.keys[0])
+                elif i == 1:
+                    actions.append(self.keys[1])
+                elif i == 2:
+                    actions.append(0)
+            i += 1
+        if len(actions) == 0:
+            actions.extend([self.keys[0], self.keys[1], 0])
+        action = random.choice(actions)
+        keys_temp[action] = 1
+
+        # Debug stuff
+        """
+        pygame.draw.rect(GameState.screen, (255, 255, 255), rect_area_left)
+        pygame.draw.rect(GameState.screen, (255, 255, 255), rect_area_right)
+        pygame.draw.rect(GameState.screen, (255, 255, 255), rect_area_top)
+        pygame.display.flip()
+        print(self.position[0], self.position[1], rect_area_left)
+        print(left, top, right)
+        """
+
+        return keys_temp
 
     @staticmethod
     def clamp(v, minv, maxv):
