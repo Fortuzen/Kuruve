@@ -12,10 +12,7 @@ from stable_baselines.common.policies import CnnPolicy
 from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines.common.evaluation import evaluate_policy
 
-# TODO: Not ready yet.
-
 import numpy as np
-
 
 # Arguments
 parser = argparse.ArgumentParser(description="Train selfplaying agent")
@@ -29,7 +26,8 @@ parser.add_argument("-frameskip", metavar="N", type=int, default=10)
 parser.add_argument("-obs_size", metavar="N", type=int, default=96)
 parser.add_argument("-envs", metavar="N", type=int, default=1)
 parser.add_argument("-model", metavar="name", type=str, default="model.pkl")
-parser.add_argument("-snapshot_time", type=int, default=21600, help="Time in seconds between saving snapshots (default: 3h)")
+parser.add_argument("-snapshot_time", type=int, default=21600,
+                    help="Time in seconds between saving snapshots (default: 3h)")
 
 parser.add_argument("-gpu", action="store_true", help="Enable gpu")
 
@@ -41,7 +39,6 @@ MODEL_NAME = args.model
 TIMESTEPS = args.timesteps
 ENV_COUNT = args.envs
 
-SNAPSHOT_PREFIX = args.model.split(".")[0]+"_snapshot"
 
 if args.gpu:
     if __name__ == "__main__":
@@ -56,7 +53,6 @@ else:
     # CPU only
     print("---Using CPU---")
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
 
 # Credits to Torille
 
@@ -85,38 +81,16 @@ def create_env_headless():
         opponent_ppo.use_random_agent = False
 
     def player2_step(obs):
-        if not opponent_ppo.use_random_agent:
-            action, opponent_ppo.hidden_state = opponent_ppo.predict(obs, state=opponent_ppo.hidden_state)
-            return action
-        else:
-            return random.choice([0, 1, 2])
+        action, opponent_ppo.hidden_state = opponent_ppo.predict(obs, state=opponent_ppo.hidden_state)
+        return action
 
     def player2_reset():
         opponent_ppo.hidden_state = None
-        # With small chance, update the opponent
-        if random.random() < 0.01:
-            rand = random.random()
-            if rand < 0.2:
-                # Just random agent
-                print("---Loading random agent---")
-                opponent_ppo.use_random_agent = True
-            elif rand < 0.4:
-                # Load some previous model
-                print("---Loading old params---")
-                opponent_ppo.use_random_agent = False
-                model_files = glob(SNAPSHOT_PREFIX + "*")
-                # If no snapshots available, load newest ones
-                load_file = MODEL_NAME
-                if len(model_files) > 0:
-                    load_file = random.choice(model_files)
-                opponent_ppo.load_parameters(load_file)
-            else:
-                # Load most recent params
-                print("---Loading new params---")
-                opponent_ppo.load_parameters(MODEL_NAME)
-                opponent_ppo.use_random_agent = False
+        print("---Loading new params---")
+        opponent_ppo.load_parameters(MODEL_NAME)
 
-    return CompetitiveEnv(headless=True, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP, enable_powerups=False,
+    return CompetitiveEnv(headless=True, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP,
+                          enable_powerups=False,
                           verbose=0, player2_step=player2_step, player2_reset=player2_reset)
 
 
@@ -142,38 +116,15 @@ def create_env():
         opponent_ppo.use_random_agent = False
 
     def player2_step(obs):
-        if not opponent_ppo.use_random_agent:
-            action, opponent_ppo.hidden_state = opponent_ppo.predict(obs, state=opponent_ppo.hidden_state)
-            return action
-        else:
-            return random.choice([0, 1, 2])
+        action, opponent_ppo.hidden_state = opponent_ppo.predict(obs, state=opponent_ppo.hidden_state)
+        return action
 
     def player2_reset():
         opponent_ppo.hidden_state = None
-        # With small chance, update the opponent
-        if random.random() < 0.01:
-            rand = random.random()
-            if rand < 0.2:
-                # Just random agent
-                print("---Loading random agent---")
-                opponent_ppo.use_random_agent = True
-            elif rand < 0.4:
-                # Load some previous model
-                print("---Loading old params---")
-                opponent_ppo.use_random_agent = False
-                model_files = glob(SNAPSHOT_PREFIX + "*")
-                # If no snapshots available, load newest ones
-                load_file = MODEL_NAME
-                if len(model_files) > 0:
-                    load_file = random.choice(model_files)
-                opponent_ppo.load_parameters(load_file)
-            else:
-                # Load most recent params
-                print("---Loading new params---")
-                opponent_ppo.load_parameters(MODEL_NAME)
-                opponent_ppo.use_random_agent = False
+        opponent_ppo.load_parameters(MODEL_NAME)
 
-    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=60, frameskip=FRAMESKIP, enable_powerups=False,
+    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=60, frameskip=FRAMESKIP,
+                          enable_powerups=False,
                           verbose=1, player2_step=player2_step, player2_reset=player2_reset)
 
 
@@ -185,21 +136,14 @@ def train():
         global last_snapshot_time
         # Save model
         _locals['self'].save(MODEL_NAME)
-        # If enough time has passed, save snapshot
-        if (time.time() - last_snapshot_time) > args.snapshot_time:
-            timestamp = datetime.now()
-            filename = "{}_{}_{}_{}_{}.pkl".format(
-                SNAPSHOT_PREFIX, timestamp.day, timestamp.month, timestamp.hour, timestamp.minute
-            )
-            _locals['self'].save(filename)
-            last_snapshot_time = time.time()
 
     envs = [create_env_headless for _ in range(ENV_COUNT)]
     vec_envs = SubprocVecEnv(envs, start_method="spawn")
-    
-    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.001, n_steps=256)
-    #model = PPO2('MlpPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
-    #model = PPO2(CnnPolicy, vec_envs, verbose=1, n_steps=256)
+
+    policy_kwargs = dict(act_fun=tf.nn.relu, net_arch=[128, 128])
+    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.001, n_steps=256, policy_kwargs=policy_kwargs)
+    # model = PPO2('MlpPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
+    # model = PPO2(CnnPolicy, vec_envs, verbose=1, n_steps=256)
 
     if not os.path.isfile(MODEL_NAME):
         model.save(MODEL_NAME)
@@ -220,8 +164,6 @@ def train():
         print(evaluate_policy(model, vec_env, n_eval_episodes=100))
         print(evaluate_policy(model, vec_env, n_eval_episodes=100))
         vec_env.close()
-
-
 
 
 def play():
