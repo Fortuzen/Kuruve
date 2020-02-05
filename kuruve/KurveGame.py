@@ -50,9 +50,11 @@ class Game:
 
         GameState.screen.fill((0, 0, 0, 255))
         GameState.collision_surface.fill((0, 0, 0, 255))
-        # TODO: Decide if borders
-        pygame.draw.rect(GameState.screen, (255, 255, 0), (0, 0, 640, 640), 4)
-        pygame.draw.rect(GameState.collision_surface, (255, 255, 0), (0, 0, 640, 640), 4)
+
+        thick = 4
+        pygame.draw.rect(GameState.screen, (255, 255, 0), (0, 0, GameConfig.screen_x-1, GameConfig.screen_y-1), thick)
+        pygame.draw.rect(GameState.collision_surface, (255, 255, 0),
+                         (0, 0, GameConfig.screen_x-1, GameConfig.screen_y-1), thick)
 
         if GameConfig.survival:
             GameState.current_map_index = random.randint(0, len(GameState.maps)-1)

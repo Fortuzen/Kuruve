@@ -128,7 +128,6 @@ class SurvivalEnv(gym.Env):
 
     def _create_observation(self):
         #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
-
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
 
         scale_x = GameConfig.screen_x / self.screen_size[0]

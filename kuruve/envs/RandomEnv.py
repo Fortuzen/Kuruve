@@ -57,7 +57,6 @@ class RandomEnv(KuruveGymEnv):
         pos_1 = (math.ceil(Player.players[0].position[0] / scale_x) - wh,
                  math.ceil(Player.players[0].position[1] / scale_y) - wh)
 
-        pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
 
         # Draw square at player's position
         self.screen_player_pos.fill((0, 0, 0))

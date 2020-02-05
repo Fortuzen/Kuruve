@@ -1,15 +1,11 @@
 import gym
 from gym import spaces
-
 import numpy as np
-
 from kuruve.KurveGame import *
-
 import os
 
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-
 
 # TODO: change parameters to kwargs/better config
 class KuruveGymEnv(gym.Env):
@@ -115,7 +111,6 @@ class KuruveGymEnv(gym.Env):
         pid = os.getpid()
         if self.verbose:
             print("PID", pid, "Score Difference", self.score_difference)
-            print(self.total_round_reward)
         self.total_round_reward = 0
         #print("PID", pid, "Total reward", self.total_reward)
 
@@ -147,7 +142,7 @@ class KuruveGymEnv(gym.Env):
         raise NotImplementedError
 
     def _create_observation(self):
-        #pygame.transform.scale(GameState.screen, self.screen_size, self.small_screen)
+        #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
 
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
         #p2_surface = self.screen_game.copy() # Just in case
