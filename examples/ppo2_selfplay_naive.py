@@ -26,8 +26,6 @@ parser.add_argument("-frameskip", metavar="N", type=int, default=10)
 parser.add_argument("-obs_size", metavar="N", type=int, default=96)
 parser.add_argument("-envs", metavar="N", type=int, default=1)
 parser.add_argument("-model", metavar="name", type=str, default="model.pkl")
-parser.add_argument("-snapshot_time", type=int, default=21600,
-                    help="Time in seconds between saving snapshots (default: 3h)")
 
 parser.add_argument("-gpu", action="store_true", help="Enable gpu")
 
@@ -86,7 +84,7 @@ def create_env_headless():
 
     def player2_reset():
         opponent_ppo.hidden_state = None
-        print("---Loading new params---")
+        #print("---Loading new params---")
         opponent_ppo.load_parameters(MODEL_NAME)
 
     return CompetitiveEnv(headless=True, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP,

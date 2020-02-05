@@ -19,7 +19,7 @@ def create_env():
     def player2_reset():
         pass
 
-    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=60, frameskip=FRAMESKIP, enable_powerups=False,
+    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP, enable_powerups=False,
                           verbose=1, player2_step=player2_step, player2_reset=player2_reset)
 
 
@@ -29,7 +29,7 @@ def play():
     game_count = 0
     obs = vec_env.reset()
     t = 0
-    while game_count < 10:
+    while game_count < 100:
         action = 0
 
         obs, reward, done, info = vec_env.step(action)
