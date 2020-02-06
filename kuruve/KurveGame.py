@@ -75,6 +75,7 @@ class Game:
             player.speedModifier = 1.0
             player.godmode = False
             player.turn90 = False
+            player.turnAmount = 4.0
 
             # Prevent player from losing at the start
             if GameConfig.survival:
