@@ -42,7 +42,9 @@ class Game:
             fps += v
         fps = fps / Game.fpsQueue.maxlen
         Game.avg_fps = fps
-        pygame.display.set_caption(str(fps))
+        # Dont update every tick
+        if GameState.round_ticks % 60 == 0:
+            pygame.display.set_caption(str(fps))
 
     @staticmethod
     def reset_game():
@@ -62,7 +64,6 @@ class Game:
             GameState.collision_surface.blit(GameState.maps[GameState.current_map_index], (0, 0))
 
         # Reset players
-        #print("Player Stats")
         for player in Player.players:
             #TODO: Prevent player spawning at bad spots (aka immediate lose)
             player.position[0] = random.randint(50, 500)
@@ -115,6 +116,8 @@ class Game:
         pygame.font.init()
         # Uninit sound because it is not needed
         pygame.mixer.quit()
+        # Ignore other pygame events
+        pygame.event.set_allowed([pygame.QUIT])
 
         # We must force 32 format screen on some systems
         if GameConfig.headless:
@@ -188,8 +191,7 @@ class Game:
             player.update()
             # Player collisions
             current_screen = GameState.collision_surface.get_at(player.pixel_collider)
-            if current_screen != (0, 0, 0, 255) and player.wormhole_timer >= 0 and not player.godmode:  # make better
-                #print(player.name, " Lost!")
+            if current_screen != (0, 0, 0) and player.wormhole_timer >= 0 and not player.godmode:  # make better
                 player.alive = False
                 Game.add_score_alive_players()
             # Powerup collisions
@@ -259,6 +261,7 @@ class Game:
         :type color: tuple eg (R,G,B)
         :param controls: Player's keyboard controls
         :type controls: A list of pygame keycodes eg [pygame.K_LEFT, pygame.K_RIGHT]
+        :param is_ai: Enable (very) simple ai.
         """
         player = Player(0, 0, 0, color, name, controls, is_ai)
         Player.players.append(player)
