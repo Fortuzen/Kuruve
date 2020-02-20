@@ -1,7 +1,9 @@
 import random
 
 from kuruve.envs.CompetitiveEnv import CompetitiveEnv
+from kuruve.KurveGame import *
 from PIL import Image
+import cv2
 
 """ Test self-play environment"""
 
@@ -9,7 +11,7 @@ from PIL import Image
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 OBS_SIZE = (96, 96)
-FRAMESKIP = 14
+FRAMESKIP = 15
 
 
 def create_env():
@@ -19,7 +21,7 @@ def create_env():
     def player2_reset():
         pass
 
-    return CompetitiveEnv(headless=False, observation_size=OBS_SIZE, fps_cap=0, frameskip=FRAMESKIP, enable_powerups=False,
+    return CompetitiveEnv(headless=True, observation_size=OBS_SIZE, fps_cap=60, frameskip=FRAMESKIP, enable_powerups=False,
                           verbose=1, player2_step=player2_step, player2_reset=player2_reset)
 
 
@@ -30,9 +32,12 @@ def play():
     obs = vec_env.reset()
     t = 0
     while game_count < 100:
-        action = 0
-
+        #action = 0
+        action = random.choice([0, 1, 2])
         obs, reward, done, info = vec_env.step(action)
+
+        cv2.imshow("frame1", obs[..., 0])
+        cv2.imshow("frame2", obs[..., 1])
 
         if 10 < t < 12:
             image1 = Image.fromarray(obs[..., 0], "L")

@@ -1,26 +1,38 @@
 from kuruve.envs.GymEnv import KuruveGymEnv
+from kuruve.GameConfig import GameConfig
+
 from PIL import Image
-from kuruve.KurveGame import *
+import cv2
+import time
 
 """Testing GymEnvironment and show image of the observation"""
 
 GameConfig.powerup_blacklist = ["gspeed", "gslow", "gthin", "ggod", "rspeed", "rslow", "rthick", "rturn"]
-env = KuruveGymEnv(headless=True, observation_size=(96, 96), fps_cap=0, frameskip=1, enable_powerups=True, verbose=1,
-                   player_count=4)
+env = KuruveGymEnv(headless=False, observation_size=(96, 96), fps_cap=0, frameskip=1, enable_powerups=True, verbose=0,
+                   player_count=2)
 
 show_obs = True
 obs = env.reset()
 t = 0
-for _ in range(1000):
+for _ in range(100000):
     actions = env.action_space.sample()
+
     obs, reward, done, info = env.step(actions)
+    #print(Game.clock.get_fps())
+
     if show_obs:
         image = Image.fromarray(obs, "RGB")
         if 15 < t < 17:
             #image.show()
-            image.save("img.bmp")
+            #image.save("img.bmp")
+            print("img created")
+        #img = cv2.imread(obs)
+        cv2.imshow('frame', obs)
         t += 1
 env.close()
+
+import sys
+sys.exit()
 
 # Create environment headless environment
 

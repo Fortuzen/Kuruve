@@ -1,7 +1,8 @@
+from ..KurveGame import *
+
 import gym
 from gym import spaces
 import numpy as np
-from kuruve.KurveGame import *
 import os
 
 # no input, left, right
@@ -61,8 +62,10 @@ class KuruveGymEnv(gym.Env):
     def step(self, action):
         """ """
 
-        #actions = [possible_actions[action[0]], possible_actions[action[1]]]
         actions = [possible_actions[action[i]] for i in range(self.player_count)]
+
+        keys = []
+        keys.extend(pygame.key.get_pressed())  # Is this fast?
         # Frameskipping
         for _ in range(self.frameskip):
 
@@ -72,8 +75,6 @@ class KuruveGymEnv(gym.Env):
                     Game.running = False
                     exit()
 
-            keys = []
-            keys.extend(pygame.key.get_pressed())  # Is this fast?
             for i, act in enumerate(actions):
                 player = Player.players[i]
                 if act[1]:
@@ -81,6 +82,8 @@ class KuruveGymEnv(gym.Env):
                 elif act[2]:
                     keys[player.keys[1]] = True
                 player.input(keys)
+                keys[player.keys[0]] = False
+                keys[player.keys[1]] = False
 
             Game.game_logic()
             Game.game_render()
@@ -146,8 +149,7 @@ class KuruveGymEnv(gym.Env):
         #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
         #p2_surface = self.screen_game.copy() # Just in case
-
-        # Swap axis because otherwise image's orientation is wrong.
-        obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
-
+        # Swap axis because otherwise image's orientation is wrong. Reference pixels instead of copy
+        #obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
+        obs = pygame.surfarray.pixels3d(self.screen_game).swapaxes(0, 1)
         return obs

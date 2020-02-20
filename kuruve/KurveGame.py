@@ -1,6 +1,4 @@
 import pygame
-from pygame import gfxdraw
-import math
 import collections
 import random
 import os
@@ -245,8 +243,8 @@ class Game:
 
         # Update the actual game window if not in headless mode
         if not GameConfig.headless:
-            pygame.display.update()
-        #pygame.display.flip()
+            pygame.display.flip()
+            #pygame.display.update()
 
         Game.clock.tick(GameConfig.framerate)
         GameState.total_ticks += 1

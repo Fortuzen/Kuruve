@@ -5,7 +5,7 @@ import time
 
 
 OBS_SIZE = (96, 96)
-FRAMESKIP = 1
+FRAMESKIP = 15
 
 
 def create_env():

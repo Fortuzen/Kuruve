@@ -138,10 +138,10 @@ def train():
     envs = [create_env_headless for _ in range(ENV_COUNT)]
     vec_envs = SubprocVecEnv(envs, start_method="spawn")
 
-    policy_kwargs = dict(act_fun=tf.nn.relu, net_arch=[128, 128])
-    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.001, n_steps=256, policy_kwargs=policy_kwargs)
-    # model = PPO2('MlpPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
-    # model = PPO2(CnnPolicy, vec_envs, verbose=1, n_steps=256)
+    #policy_kwargs = dict(act_fun=tf.nn.relu, net_arch=[128, 128])
+    #model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.001, n_steps=256, policy_kwargs=policy_kwargs)
+    #model = PPO2('MlpPolicy', vec_envs, verbose=1, ent_coef=0.00001, n_steps=256)
+    model = PPO2('CnnPolicy', vec_envs, verbose=1, ent_coef=0.0001, n_steps=256)
 
     if not os.path.isfile(MODEL_NAME):
         model.save(MODEL_NAME)

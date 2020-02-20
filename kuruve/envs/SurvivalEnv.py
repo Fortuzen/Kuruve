@@ -1,9 +1,11 @@
+from ..KurveGame import *
+
 import gym
 from gym import spaces
 import numpy as np
-import os
 
-from kuruve.KurveGame import *
+import os
+import math
 
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]

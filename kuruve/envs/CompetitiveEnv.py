@@ -81,10 +81,13 @@ class CompetitiveEnv(KuruveGymEnv):
 
         # Create observation
         obs = np.dot(obs[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
-        pos_arr_1 = pygame.surfarray.array3d(self.screen_player_pos_1).swapaxes(0, 1)
+        #pos_arr_1 = pygame.surfarray.array3d(self.screen_player_pos_1).swapaxes(0, 1)
+        pos_arr_1 = pygame.surfarray.pixels3d(self.screen_player_pos_1).swapaxes(0, 1)
         pos_arr_1 = pos_arr_1[..., 1].astype(np.uint8)
         #pos_arr_1 = np.dot(pos_arr_1[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
-        pos_arr_2 = pygame.surfarray.array3d(self.screen_player_pos_2).swapaxes(0, 1)
+
+        #pos_arr_2 = pygame.surfarray.array3d(self.screen_player_pos_2).swapaxes(0, 1)
+        pos_arr_2 = pygame.surfarray.pixels3d(self.screen_player_pos_2).swapaxes(0, 1)
         pos_arr_2 = pos_arr_2[..., 1].astype(np.uint8)
         #pos_arr_2 = np.dot(pos_arr_2[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
