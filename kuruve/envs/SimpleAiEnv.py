@@ -1,8 +1,11 @@
 from kuruve.envs.GymEnv import KuruveGymEnv
 from kuruve.KurveGame import *
+
 import pygame
 import numpy as np
 from gym import spaces
+
+import math
 
 
 class SimpleAiEnv(KuruveGymEnv):
