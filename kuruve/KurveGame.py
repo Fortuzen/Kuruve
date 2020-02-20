@@ -114,8 +114,6 @@ class Game:
         pygame.font.init()
         # Uninit sound because it is not needed
         pygame.mixer.quit()
-        # Ignore other pygame events
-        pygame.event.set_allowed([pygame.QUIT])
 
         # We must force 32 format screen on some systems
         if GameConfig.headless:
@@ -124,6 +122,8 @@ class Game:
             pygame.display.init()
             GameState.screen = pygame.Surface((GameConfig.screen_x, GameConfig.screen_y))
             GameState.screen = GameState.screen.convert(32, 0)
+            # Ignore other pygame events
+            pygame.event.set_allowed([pygame.QUIT])
         else:
             GameState.screen = pygame.display.set_mode((GameConfig.screen_x, GameConfig.screen_y), 0, 32)
             pygame.display.set_caption("Kuruve")
