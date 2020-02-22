@@ -11,5 +11,6 @@ setup(
     description='Kuruve learning environment. Achtung Die Kurve clone.',
     packages=find_packages(),
     package_data={'kuruve': ['maps/*.png']},
-    include_package_data=True
+    include_package_data=True,
+    install_requires=["pygame", "numpy", "gym"]
 )
