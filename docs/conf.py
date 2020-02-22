@@ -17,6 +17,8 @@ sys.path.insert(0, os.path.abspath('../'))
 print(sys.path[0])
 
 
+
+
 # -- Project information -----------------------------------------------------
 
 project = 'Kuruve'
@@ -54,3 +56,6 @@ html_static_path = ['_static']
 
 # Readthedocs fix
 master_doc = 'index'
+
+# Mock libraries
+autodoc_mock_imports = ["pygame", "numpy", "gym"]
