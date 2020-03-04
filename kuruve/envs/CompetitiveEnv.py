@@ -16,7 +16,7 @@ class CompetitiveEnv(KuruveGymEnv):
                  verbose=0, player2_step=None, player2_reset=None):
         super().__init__(headless, observation_size, fps_cap, frameskip, enable_powerups, verbose)
 
-        self.action_space = spaces.Discrete(3)
+        self.action_space = spaces.MultiDiscrete([3])
         self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8, shape=(self.screen_size[1], self.screen_size[0], 2))
 
         self.player2_step = player2_step
@@ -39,7 +39,9 @@ class CompetitiveEnv(KuruveGymEnv):
 
     def step(self, action):
         p2_action = self.player2_step(self.player2_obs)
-        actions = [action, p2_action]
+        #print(action)
+        actions = [action[0], p2_action[0]]
+        #print(actions)
         obs, reward, done, info = super().step(actions)
         obs = self._process_observations(obs)
 
@@ -47,7 +49,7 @@ class CompetitiveEnv(KuruveGymEnv):
         reward = reward[0]
         #info = {"total_reward": self.total_reward, "score_difference": self.score_difference}
         info = {}
-        return obs[0], reward, done, info
+        return obs[0], reward, done, {}
 
     def render(self, mode="human"):
         raise NotImplementedError

@@ -105,7 +105,7 @@ class KuruveGymEnv(gym.Env):
 
         self.total_round_reward += reward[0]
 
-        return obs, reward, terminal, None
+        return obs, reward, terminal, {}
 
     def reset(self):
         """ """
