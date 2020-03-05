@@ -29,6 +29,9 @@ class CompetitiveEnv(KuruveGymEnv):
         self.screen_player_pos_2 = pygame.Surface(self.screen_size)
         self.screen_player_pos_2 = self.screen_player_pos_2.convert(32, 0)
 
+        # Hack to make the observations same looking for both
+        Player.players[1].color = Player.players[0].color
+
     def reset(self):
         obs = super().reset()
         obs = self._process_observations(obs)
@@ -39,9 +42,7 @@ class CompetitiveEnv(KuruveGymEnv):
 
     def step(self, action):
         p2_action = self.player2_step(self.player2_obs)
-        #print(action)
         actions = [action[0], p2_action[0]]
-        #print(actions)
         obs, reward, done, info = super().step(actions)
         obs = self._process_observations(obs)
 
