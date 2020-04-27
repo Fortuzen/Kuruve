@@ -40,6 +40,5 @@ class EventManager:
         :param `*args`: The function's arguments
 
         """
-        # print(args)
         e = Event(ticks + EventManager.total_ticks, function, *args)
         EventManager.events.append(e)

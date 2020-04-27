@@ -105,10 +105,6 @@ class Player:
             pygame.gfxdraw.aacircle(screen_surface, prev_pos[0], prev_pos[1], self.radius, self.color)
             pygame.gfxdraw.filled_circle(screen_surface, prev_pos[0], prev_pos[1], self.radius, self.color)
         else:
-            # Old solution:
-            # Looks "bad" but it is a necessary sacrifice
-            #pygame.gfxdraw.filled_circle(screen_surface, prev_pos[0], prev_pos[1], self.radius+1, (0, 0, 0))
-            # New solution.
             area = (prev_pos[0]-self.radius, prev_pos[1]-self.radius, self.radius * 2, self.radius * 2)
             screen_surface.blit(GameState.collision_surface, (area[0], area[1]), area)
 
@@ -163,7 +159,6 @@ class Player:
         # candidates
         thres = 1
         can_turn = [left < thres, right < thres, top < thres]
-        #print(can_turn)
         i = 0
         actions = list()
         for b in can_turn:

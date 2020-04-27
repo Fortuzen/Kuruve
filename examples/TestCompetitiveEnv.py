@@ -1,22 +1,20 @@
-import random
-
 from kuruve.envs.CompetitiveEnv import CompetitiveEnv
 from kuruve.KurveGame import *
 from PIL import Image
 import cv2
 
-""" Test self-play environment"""
+""" Test self-play environment and draw observations"""
 
 
 # no input, left, right
 possible_actions = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-OBS_SIZE = (96, 96)
-FRAMESKIP = 15
+OBS_SIZE = (80, 80)
+FRAMESKIP = 10
 
 
 def create_env():
     def player2_step(obs):
-        return random.choice([0, 1, 2])
+        return [random.choice([0, 1, 2])]
 
     def player2_reset():
         pass
@@ -27,32 +25,25 @@ def create_env():
 
 def play():
     vec_env = create_env()
-
     game_count = 0
     obs = vec_env.reset()
     t = 0
     while game_count < 100:
-        #action = 0
-        action = random.choice([0, 1, 2])
+        action = [random.choice([0, 1, 2])]
         obs, reward, done, info = vec_env.step(action)
-
         cv2.imshow("frame1", obs[..., 0])
         cv2.imshow("frame2", obs[..., 1])
 
-        if 10 < t < 12:
+        # Save observations at some point
+        if t==12:
             image1 = Image.fromarray(obs[..., 0], "L")
             image2 = Image.fromarray(obs[..., 1], "L")
-            #image.convert("L").save("test.bmp")
-            #Image.blend(image1, image2, 0.5).show()
-            #image1.show()
-            #image2.show()
             image1.save("comp_env_1.png")
             image2.save("comp_env_2.png")
         t += 1
         if done:
             game_count += 1
             vec_env.reset()
-
     vec_env.close()
 
 

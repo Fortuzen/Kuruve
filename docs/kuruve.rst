@@ -6,7 +6,7 @@ Kuruve
 What is Kuruve
 ----------------------------------
 
-Kuruve is "Achtung, die Kurve!/Curve Fever" clone and learning environment.
+Kuruve is a "Achtung, die Kurve!/Curve Fever" clone and an learning environment.
 The goal of the game is to be the last worm standing in the field. You have to avoid other worms and use powerups 
 to your advantage.
 

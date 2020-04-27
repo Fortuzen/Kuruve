@@ -1,4 +1,4 @@
-import pygame  # hmmm
+import pygame
 
 
 class GameConfig:

@@ -12,8 +12,8 @@ def mainloop():
     # TODO: Add custom amount of players
     Game.add_player("Kurve_1", GameConfig.default_colors[0], GameConfig.default_controls[0])
     Game.add_player("Kurve_2", GameConfig.default_colors[1], GameConfig.default_controls[1], is_ai=True)
-    #Game.add_player("Kurve_3", GameConfig.default_colors[2], GameConfig.default_controls[2], is_ai=True)
-    #Game.add_player("Kurve_4", GameConfig.default_colors[3], GameConfig.default_controls[3], is_ai=True)
+    # Game.add_player("Kurve_3", GameConfig.default_colors[2], GameConfig.default_controls[2], is_ai=True)
+    # Game.add_player("Kurve_4", GameConfig.default_colors[3], GameConfig.default_controls[3], is_ai=True)
 
     # Game begins
     Game.reset_game()
@@ -23,7 +23,7 @@ def mainloop():
         Game.game_logic()
         Game.game_render()
 
-        #print(Game.clock.get_fps())
+        # print(Game.clock.get_fps())
 
         if len(Game.fpsQueue) == Game.fpsQueue.maxlen:
             Game.fpsQueue.popleft()
@@ -37,13 +37,12 @@ def mainloop():
 def main():
     GameConfig.headless = False
     GameConfig.survival = False
-    GameConfig.framerate = 0
-    #GameConfig.powerups_enabled = False
-    #GameConfig.powerup_blacklist = ["gspeed", "gslow", "gthin", "ggod", "rspeed", "rslow", "rthick", "rturn"]
+    GameConfig.framerate = 60
+    # GameConfig.powerups_enabled = False
+    # GameConfig.powerup_blacklist = ["gspeed", "gslow", "gthin", "ggod", "rspeed", "rslow", "rthick", "rturn"]
     Game.init()
     mainloop()
 
 
 if __name__ == "__main__":
     main()
-

@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-
+import math
 from kuruve.KurveGame import *
 from kuruve.envs.GymEnv import KuruveGymEnv
 from gym import spaces
@@ -26,6 +26,7 @@ class RandomEnv(KuruveGymEnv):
 
     def reset(self):
         obs = super().reset()
+        obs = self._process_observation(obs)
         return obs
 
     def step(self, action):
@@ -34,7 +35,6 @@ class RandomEnv(KuruveGymEnv):
         obs, reward, done, info = super().step(actions)
         obs = self._process_observation(obs)
         reward = reward[0]
-        #info = {"total_reward": self.total_reward, "score_difference": self.score_difference}
         info = {}
         return obs[0], reward, done, info
 
@@ -57,7 +57,6 @@ class RandomEnv(KuruveGymEnv):
         pos_1 = (math.ceil(Player.players[0].position[0] / scale_x) - wh,
                  math.ceil(Player.players[0].position[1] / scale_y) - wh)
 
-
         # Draw square at player's position
         self.screen_player_pos.fill((0, 0, 0))
         pygame.draw.rect(self.screen_player_pos, (255, 255, 255), (pos_1, rect))
@@ -69,5 +68,4 @@ class RandomEnv(KuruveGymEnv):
         pos_arr = np.dot(pos_arr[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
         obs = np.dstack((obs, pos_arr))
-
         return obs

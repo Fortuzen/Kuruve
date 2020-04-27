@@ -33,18 +33,12 @@ class Powerup:
         self.name = name
         self.name_short = name_short
         self.powerup_text = Powerup.font.render(self.name_short, True, (255, 255, 255), self.color)
-        #self.duration = duration
 
     # Override this
     def render(self, screen_surface):
         pos = (math.ceil(self.position[0]), math.ceil(self.position[1]))
         pygame.gfxdraw.aacircle(screen_surface, pos[0], pos[1], self.radius, (255, 255, 0))
-        #pygame.gfxdraw.filled_circle(screen_surface, pos[0], pos[1], self.radius, (255, 255, 0))
-        pygame.gfxdraw.filled_circle(screen_surface, pos[0], pos[1], self.radius-1, self.color)
-
-        #pygame.draw.circle(screen_surface, (255, 255, 0), (pos[0], pos[1]), self.radius, 2)
-        #pygame.draw.circle(screen_surface, self.color, (pos[0], pos[1]), self.radius-2)
-
+        pygame.gfxdraw.filled_circle(screen_surface, pos[0], pos[1], self.radius - 1, self.color)
         powerup_rect = self.powerup_text.get_rect()
         powerup_rect.center = (pos[0], pos[1])
         screen_surface.blit(self.powerup_text, powerup_rect)
@@ -69,26 +63,26 @@ class Powerup:
 class PowerupGreenSpeed(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_s, player, 2)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1.5)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_speedmodifier_s, player, 1.5)
 
 
 class PowerupGreenSlow(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_s, player, 0.5)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_s, player, 1.5)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_speedmodifier_s, player, 1.5)
 
 
 class PowerupGreenGodMode(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_godmode, player, True)
-        EventManager.fire_event_after_delay(60*4, Player.set_godmode, player, False)
+        EventManager.fire_event_after_delay(60 * 4, Player.set_godmode, player, False)
 
 
 class PowerupGreenThin(Powerup):
     def handle_collision(self, player):
         ograd = player.radius
-        EventManager.fire_event_after_delay(0, Player.set_thin, player, round(ograd/2))
-        EventManager.fire_event_after_delay(60*3, Player.set_thin, player, ograd)
+        EventManager.fire_event_after_delay(0, Player.set_thin, player, round(ograd / 2))
+        EventManager.fire_event_after_delay(60 * 3, Player.set_thin, player, ograd)
 
 
 """ Red Powerups"""
@@ -97,25 +91,25 @@ class PowerupGreenThin(Powerup):
 class PowerupRedSpeed(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_enemies_s, player, 2)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1.5)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_speedmodifier_enemies_s, player, 1.0)
 
 
 class PowerupRedSlow(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_speedmodifier_enemies_s, player, 0.5)
-        EventManager.fire_event_after_delay(60*3, Player.set_speedmodifier_enemies_s, player, 1.5)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_speedmodifier_enemies_s, player, 1.0)
 
 
 class PowerupRedThick(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_enemies_thick, player, 6)
-        EventManager.fire_event_after_delay(60*3, Player.set_enemies_thick, player, 3)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_enemies_thick, player, 3)
 
 
 class PowerupRedTurn90(Powerup):
     def handle_collision(self, player):
         EventManager.fire_event_after_delay(0, Player.set_90_turn_enemies, player, True, 90)
-        EventManager.fire_event_after_delay(60*3, Player.set_90_turn_enemies, player, False, 4)
+        EventManager.fire_event_after_delay(60 * 3, Player.set_90_turn_enemies, player, False, 4)
 
 
 """ Blue Powerups"""
@@ -123,8 +117,6 @@ class PowerupRedTurn90(Powerup):
 
 class PowerupBlueEraser(Powerup):
     def handle_collision(self, player):
-        #EventManager.fire_event_after_delay(0, GameState.clear_screen, GameState.collision_surface)
-        #EventManager.fire_event_after_delay(0, GameState.clear_screen, GameState.screen)
         GameState.clear_screen(GameState.collision_surface)
         GameState.clear_screen(GameState.screen)
 
@@ -164,12 +156,9 @@ class PowerupSpawner:
                     PowerupSpawner.available_powerups.remove(pu)
                     break
 
-
-
     @staticmethod
     def create_spawn_powerup_event():
         """Creates the event that spawns the powerups. Calls itself to spwan powerups forever."""
-        #print("CALLED")
         random_time = random.randrange(PowerupSpawner.random_range[0], PowerupSpawner.random_range[1]) * 60
         if len(Powerup.powerups) < PowerupSpawner.max_powerup_count:
             EventManager.fire_event_after_delay(random_time, PowerupSpawner.spawn_powerup)
@@ -185,4 +174,3 @@ class PowerupSpawner:
         ry = random.randrange(0, GameConfig.screen_y)
         pu.position = [rx, ry]
         Powerup.powerups.append(pu)
-        #print("Spawn")

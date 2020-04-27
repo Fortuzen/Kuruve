@@ -109,14 +109,11 @@ class KuruveGymEnv(gym.Env):
 
     def reset(self):
         """ """
-
-        #print("KuruveGymEnv reset")
         self.score_difference = Player.players[0].score - Player.players[1].score
         pid = os.getpid()
         if self.verbose:
             print("PID", pid, "Score Difference", self.score_difference)
         self.total_round_reward = 0
-        #print("PID", pid, "Total reward", self.total_reward)
 
         if not Game.reseting:
             Game.reset_game()
@@ -146,10 +143,7 @@ class KuruveGymEnv(gym.Env):
         raise NotImplementedError
 
     def _create_observation(self):
-        #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
-        #p2_surface = self.screen_game.copy() # Just in case
         # Swap axis because otherwise image's orientation is wrong. Reference pixels instead of copy
-        #obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
         obs = pygame.surfarray.pixels3d(self.screen_game).swapaxes(0, 1)
         return obs

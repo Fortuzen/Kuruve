@@ -30,5 +30,5 @@ The environments need `gym <https://github.com/openai/gym>`_ and `numpy <https:/
 
 If you want to run the examples, you need to have `stable-baselines <https://github.com/hill-a/stable-baselines/>`_ installed.
 To install stable-baselines, refer to these `instructions <https://stable-baselines.readthedocs.io/en/master/guide/install.html>`_
-Some examples might need `Pillow <https://pillow.readthedocs.io/en/latest/installation.html>`_.
+Some examples might need `Pillow <https://pillow.readthedocs.io/en/latest/installation.html>`_ and OpenCV.
 

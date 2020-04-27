@@ -1,17 +1,14 @@
 from kuruve.envs.GymEnv import KuruveGymEnv
 from kuruve.KurveGame import *
-
+from gym import spaces
 import pygame
 import numpy as np
-from gym import spaces
-
 import math
 
 
 class SimpleAiEnv(KuruveGymEnv):
     """
-    Environment in which the second worm's actions are random. Not very useful for training because
-    the random worm does not survive for long.
+    Environment with an AI opponent
     """
 
     def __init__(self, headless=False, observation_size=(64, 64), fps_cap=0, frameskip=0, enable_powerups=False,
@@ -43,7 +40,6 @@ class SimpleAiEnv(KuruveGymEnv):
         obs, reward, done, info = super().step(actions)
         obs = self._process_observation(obs)
         reward = reward[0]
-        #info = {"total_reward": self.total_reward, "score_difference": self.score_difference}
         info = {}
         return obs, reward, done, info
 

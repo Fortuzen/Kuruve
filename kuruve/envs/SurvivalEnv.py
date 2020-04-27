@@ -1,9 +1,7 @@
 from ..KurveGame import *
-
 import gym
 from gym import spaces
 import numpy as np
-
 import os
 import math
 
@@ -57,7 +55,7 @@ class SurvivalEnv(gym.Env):
         # 1.obs=grayscale image of game, 2.obs= player position
         self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8, shape=(self.screen_size[1], self.screen_size[0], 2))
         # Original, grayscale image
-        #self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8, shape=(self.screen_size[1], self.screen_size[0], 1))
+        # self.observation_space = spaces.Box(low=0, high=255, dtype=np.uint8, shape=(self.screen_size[1], self.screen_size[0], 1))
         self.reward_range = (0, float('inf'))
 
     def step(self, action):
@@ -100,12 +98,9 @@ class SurvivalEnv(gym.Env):
         return obs, reward, terminal, {}
 
     def reset(self):
-        #print("KuruveGymEnv reset")
-        pid = os.getpid()
         if self.verbose:
             print(self.total_round_reward)
         self.total_round_reward = 0
-        #print("PID", pid, "Total reward", self.total_reward)
 
         if not Game.reseting:
             Game.reset_game()
@@ -129,20 +124,18 @@ class SurvivalEnv(gym.Env):
         raise NotImplementedError
 
     def _create_observation(self):
-        #pygame.transform.scale(GameState.screen, self.screen_size, self.screen_game)
         pygame.transform.smoothscale(GameState.screen, self.screen_size, self.screen_game)
 
         scale_x = GameConfig.screen_x / self.screen_size[0]
         scale_y = GameConfig.screen_y / self.screen_size[1]
         # TODO: Aspect ratio
         wh = math.ceil(Player.players[0].radius / scale_x)
-        rect = (wh*2, wh*2)
 
         # Position for the white rectangle. wh is needed to center it.
         pos_1 = (math.ceil(Player.players[0].position[0] / scale_x)-wh, math.ceil(Player.players[0].position[1] / scale_y)-wh)
 
         # Draw rect at players' positions
-        # TODO: Replace fill with draw. Insted of fill, draw black rect over the white.
+        # TODO: Replace fill with draw. Insted of fill, draw black rect over the white square.
         self.screen_player_pos.fill((0, 0, 0))
         pygame.draw.rect(self.screen_player_pos, (255, 255, 255), (pos_1, (2, 2)))
 
@@ -150,10 +143,9 @@ class SurvivalEnv(gym.Env):
         obs = pygame.surfarray.array3d(self.screen_game).swapaxes(0, 1)
         obs = np.dot(obs[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
-        # Create observation, player position TODO: Test new pos_arr
+        # Create observation, player position
         pos_arr = pygame.surfarray.array3d(self.screen_player_pos).swapaxes(0, 1)
-        #pos_arr = np.dot(pos_arr[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
         pos_arr = pos_arr[..., 1].astype(np.uint8)
-        obs = np.dstack((obs, pos_arr))
 
+        obs = np.dstack((obs, pos_arr))
         return obs

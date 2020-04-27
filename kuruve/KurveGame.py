@@ -63,7 +63,7 @@ class Game:
 
         # Reset players
         for player in Player.players:
-            #TODO: Prevent player spawning at bad spots (aka immediate lose)
+            # TODO: Prevent player spawning at bad spots (aka immediate lose)
             player.position[0] = random.randint(50, 500)
             player.position[1] = random.randint(50, 500)
             player.angle = random.randint(0, 360)
@@ -80,14 +80,10 @@ class Game:
             if GameConfig.survival:
                 while True:
                     if GameState.collision_surface.get_at((player.position[0], player.position[1])) == (0, 0, 0):
-                        #print("Ok")
                         break
                     else:
                         player.position[0] = random.randint(50, 500)
                         player.position[1] = random.randint(50, 500)
-                        #print("New pos")
-
-            #print(player.name, ": ", player.score)
 
         EventManager.events = []
         Powerup.powerups = []
@@ -232,9 +228,6 @@ class Game:
             pygame.draw.rect(GameState.collision_surface, (255, 255, 0), (0, 0, 640, 640), 4)
             GameState.force_redraw = False
 
-        # Inefficient
-        #GameState.screen.blit(GameState.collision_surface, (0, 0))
-
         for player in Player.players:
             player.render_yellow_dot(GameState.screen)
 
@@ -244,7 +237,6 @@ class Game:
         # Update the actual game window if not in headless mode
         if not GameConfig.headless:
             pygame.display.flip()
-            #pygame.display.update()
 
         Game.clock.tick(GameConfig.framerate)
         GameState.total_ticks += 1
@@ -263,4 +255,3 @@ class Game:
         """
         player = Player(0, 0, 0, color, name, controls, is_ai)
         Player.players.append(player)
-
